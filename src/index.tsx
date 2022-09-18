@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { EntityProvider } from "./context/EntityContext";
 import { BoardProvider } from "./context/BoardContext";
 
 const root = ReactDOM.createRoot(
@@ -11,7 +12,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <BoardProvider>
-      <App />
+      <EntityProvider>
+        <App />
+      </EntityProvider>
     </BoardProvider>
   </React.StrictMode>
 );

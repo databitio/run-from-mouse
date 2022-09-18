@@ -1,11 +1,12 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import { Entity } from "../board/Entity";
 
 export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 export interface Tile {
   active: boolean;
   blocked: boolean;
-  occupied: boolean;
+  occupied: Entity;
   x: number;
   y: number;
 }
@@ -19,7 +20,6 @@ export interface BoardState {
   setTileSize: (tileSize: number) => void;
   chargeLeft: number;
   setChargeLeft: (chargeLeft: number) => void;
-  //   Entities: Entity[];
 }
 
 const BoardContext = createContext<BoardState>({} as BoardState);
@@ -35,7 +35,7 @@ export const BoardProvider = (props: any) => {
         const new_tile = {
           active: false,
           blocked: false,
-          occupied: false,
+          occupied: {} as Entity,
           x: i,
           y: j,
         };
@@ -52,21 +52,19 @@ export const BoardProvider = (props: any) => {
   const [tileSize, setTileSize] = useState(30);
   const [chargeLeft, setChargeLeft] = useState(100);
 
+  const board: BoardState = {
+    numberOfTiles: numberOfTiles,
+    setNumberOfTiles: setNumberOfTiles,
+    tiles: tiles,
+    setTiles: setTiles,
+    tileSize: tileSize,
+    setTileSize: setTileSize,
+    chargeLeft: chargeLeft,
+    setChargeLeft: setChargeLeft,
+  };
+
   return (
-    <BoardContext.Provider
-      value={{
-        numberOfTiles,
-        setNumberOfTiles,
-        tiles,
-        setTiles,
-        tileSize,
-        setTileSize,
-        chargeLeft,
-        setChargeLeft,
-      }}
-    >
-      {children}
-    </BoardContext.Provider>
+    <BoardContext.Provider value={board}>{children}</BoardContext.Provider>
   );
 };
 

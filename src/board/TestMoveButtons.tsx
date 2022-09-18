@@ -1,20 +1,15 @@
-import { MoveDown, MoveUp, MoveRight, MoveLeft } from "./Entity";
 import useBoard from "../hooks/useBoard";
-const TestMoveButtons = (props: {
-  x: number;
-  y: number;
-  setX: (x: number) => void;
-  setY: (y: number) => void;
-}) => {
-  const { x, y, setX, setY } = props;
+import useEntities from "../hooks/useEntities";
+const TestMoveButtons = () => {
   const board = useBoard();
+  const entities = useEntities();
 
   return (
     <div className="flex flex-row">
       <button
         className="bg-slate-700 text-white w-[80px] m-2"
         onClick={() => {
-          MoveLeft(board, x, y, setX);
+          entities.mouse.MoveLeft(board);
         }}
       >
         Left
@@ -22,7 +17,7 @@ const TestMoveButtons = (props: {
       <button
         className="bg-slate-700 text-white w-[80px] m-2"
         onClick={() => {
-          MoveRight(board, x, y, setX);
+          entities.mouse.MoveRight(board);
         }}
       >
         Right
@@ -30,7 +25,7 @@ const TestMoveButtons = (props: {
       <button
         className="bg-slate-700 text-white w-[80px] m-2"
         onClick={() => {
-          MoveUp(board, x, y, setY);
+          entities.mouse.MoveUp(board);
         }}
       >
         Up
@@ -38,7 +33,7 @@ const TestMoveButtons = (props: {
       <button
         className="bg-slate-700 text-white w-[80px] m-2"
         onClick={() => {
-          MoveDown(board, x, y, setY);
+          entities.mouse.MoveDown(board);
         }}
       >
         Down
