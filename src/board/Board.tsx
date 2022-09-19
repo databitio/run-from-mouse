@@ -2,9 +2,33 @@ import TileComponent from "./Tile";
 import useBoard from "../hooks/useBoard";
 import useEntities from "../hooks/useEntities";
 import TestMoveButtons from "./TestMoveButtons";
+import { useEffect } from "react";
+import { delay } from "../context/BoardContext";
 
 const Board = () => {
   const board = useBoard();
+  const entities = useEntities();
+  const continueRight = async () => {
+    await delay(3000 / entities.mouse.speed);
+    entities.mouse.MoveRight(board);
+    continueRight();
+  };
+
+  document.onkeydown = checkKey;
+
+  function checkKey(e: any) {
+    e = e || window.event;
+
+    if (e.keyCode == "38") {
+      entities.mouse.MoveUp(board);
+    } else if (e.keyCode == "40") {
+      entities.mouse.MoveDown(board);
+    } else if (e.keyCode == "37") {
+      entities.mouse.MoveLeft(board);
+    } else if (e.keyCode == "39") {
+      entities.mouse.MoveRight(board);
+    }
+  }
 
   return (
     <div>

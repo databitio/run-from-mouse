@@ -1,12 +1,33 @@
-import { createContext, useEffect, useState } from "react";
-import { Entity } from "../board/Entity";
+import { createContext, useState } from "react";
+import { Entity } from "./EntityContext";
 
 export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
+export class Consumable {
+  name: string;
+  x: number;
+  y: number;
+  speed: number;
+  duration: number;
+  constructor(
+    name: string,
+    x: number,
+    y: number,
+    speed: number,
+    duration: number
+  ) {
+    this.name = name;
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
+    this.duration = duration;
+  }
+}
 
 export interface Tile {
   active: boolean;
   blocked: boolean;
-  occupied: Entity;
+  occupied: Entity | Consumable;
   x: number;
   y: number;
 }
@@ -35,12 +56,18 @@ export const BoardProvider = (props: any) => {
         const new_tile = {
           active: false,
           blocked: false,
-          occupied: {} as Entity,
+          occupied: {} as Entity | Consumable,
           x: i,
           y: j,
         };
         if (i === Math.floor(Math.random() * numberOfTiles))
           new_tile.blocked = true;
+        if (
+          i === Math.floor(Math.random() * numberOfTiles) &&
+          !new_tile.blocked
+        ) {
+          new_tile.occupied = new Consumable("cheese", i, j, 2, 30000);
+        }
         new_tiles[i].push(new_tile);
       }
     }
