@@ -88,23 +88,40 @@ export class Entity {
 export interface EntityContext {
   mouse: Entity;
   setMouse: (mouse: Entity) => void;
+  cheese: Entity;
+  setCheese: (cheese: Entity) => void;
 }
 
 const EntityContext = createContext<EntityContext>({} as EntityContext);
 
 export const EntityProvider = (props: any) => {
   const { children } = props;
-  const [mouse, setMouse] = useState(new Entity("mouse", 0, 0));
   const board = useBoard();
+  const corner = board.numberOfTiles - 1;
+
+  const [mouse, setMouse] = useState(new Entity("mouse", 0, 0));
+  const [cheese, setCheese] = useState(new Entity("cheese", corner, corner));
+
+  // const unvisitedSet: number[][] = [];
+  // for (let i = 0; i < board.numberOfTiles; i++) {
+  //   for (let j = 0; j < board.numberOfTiles; j++) {
+  //     if (i === mouse.x && j === mouse.y) {
+  //       unvisitedSet[mouse.x][mouse.y] = 0;
+  //     } else unvisitedSet[i][j] = Math.pow(10, 1000);
+  //   }
+  // }
 
   useEffect(() => {
     board.tiles[0][0].occupied = mouse;
+    board.tiles[corner][corner].occupied = cheese;
     board.setTiles(board.tiles);
   }, []);
 
   const entities: EntityContext = {
     mouse: mouse,
     setMouse: setMouse,
+    cheese: cheese,
+    setCheese: setCheese,
   };
 
   return (

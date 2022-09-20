@@ -28,6 +28,7 @@ export interface Tile {
   active: boolean;
   blocked: boolean;
   occupied: Entity | Consumable;
+  sniffed: boolean;
   x: number;
   y: number;
 }
@@ -56,6 +57,7 @@ export const BoardProvider = (props: any) => {
         const new_tile = {
           active: false,
           blocked: false,
+          sniffed: false,
           occupied: {} as Entity | Consumable,
           x: i,
           y: j,
@@ -74,7 +76,7 @@ export const BoardProvider = (props: any) => {
     return new_tiles;
   };
 
-  const [numberOfTiles, setNumberOfTiles] = useState(20);
+  const [numberOfTiles, setNumberOfTiles] = useState(10);
   const [tiles, setTiles] = useState<Tile[][]>(createTiles());
   const [tileSize, setTileSize] = useState(30);
   const [chargeLeft, setChargeLeft] = useState(100);

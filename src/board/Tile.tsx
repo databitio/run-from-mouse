@@ -39,6 +39,8 @@ const TileComponent = (props: {
           ? "border-[1px] border-slate-500 bg-slate-500 transition-colors cursor-pointer flex items-center justify-center"
           : tile.blocked
           ? "border-[1px] border-slate-300 bg-slate-900 transition-colors cursor-pointer flex items-center justify-center"
+          : tile.sniffed === true
+          ? "border-[1px] bg-green-300 degrade-color cursor-pointer flex items-center justify-center"
           : "border-[1px] border-slate-300 bg-slate-200 degrade-color cursor-pointer flex items-center justify-center"
       }
       draggable={true}

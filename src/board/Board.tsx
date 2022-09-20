@@ -1,18 +1,11 @@
 import TileComponent from "./Tile";
 import useBoard from "../hooks/useBoard";
 import useEntities from "../hooks/useEntities";
-import TestMoveButtons from "./TestMoveButtons";
-import { useEffect } from "react";
-import { delay } from "../context/BoardContext";
+import { sniffRange } from "../search_for_cheese/SniffRadius";
 
 const Board = () => {
   const board = useBoard();
   const entities = useEntities();
-  const continueRight = async () => {
-    await delay(3000 / entities.mouse.speed);
-    entities.mouse.MoveRight(board);
-    continueRight();
-  };
 
   document.onkeydown = checkKey;
 
@@ -20,13 +13,13 @@ const Board = () => {
     e = e || window.event;
 
     if (e.keyCode == "38") {
-      entities.mouse.MoveUp(board);
+      entities.cheese.MoveUp(board);
     } else if (e.keyCode == "40") {
-      entities.mouse.MoveDown(board);
+      entities.cheese.MoveDown(board);
     } else if (e.keyCode == "37") {
-      entities.mouse.MoveLeft(board);
+      entities.cheese.MoveLeft(board);
     } else if (e.keyCode == "39") {
-      entities.mouse.MoveRight(board);
+      entities.cheese.MoveRight(board);
     }
   }
 
@@ -48,7 +41,19 @@ const Board = () => {
           </div>
         ))}
       </section>
-      <TestMoveButtons />
+      <button
+        className="w-[200px] h-[50px] bg-green-500"
+        onClick={() => {
+          sniffRange(
+            board,
+            board.tiles[entities.cheese.x][entities.cheese.y],
+            5,
+            1000
+          );
+        }}
+      >
+        Sniff
+      </button>
     </div>
   );
 };
