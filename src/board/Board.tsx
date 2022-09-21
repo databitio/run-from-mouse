@@ -1,7 +1,7 @@
 import TileComponent from "./Tile";
 import useBoard from "../hooks/useBoard";
 import useEntities from "../hooks/useEntities";
-import { sniffRange } from "../search_for_cheese/SniffRadius";
+import { useEffect } from "react";
 
 const Board = () => {
   const board = useBoard();
@@ -23,6 +23,18 @@ const Board = () => {
     }
   }
 
+  // const loopSniff = async () => {
+  //   let found = true;
+  //   while (found) {
+  //     found = await sniffRange(
+  //       board,
+  //       entities.cheese,
+  //       board.tiles[entities.cheese.x][entities.cheese.y],
+  //       20
+  //     );
+  //   }
+  // };
+
   return (
     <div>
       <section className="bg-neutral-500 relative flex flex-col border-4 border-black">
@@ -41,20 +53,19 @@ const Board = () => {
           </div>
         ))}
       </section>
-      <button
+      {/* <button
         className="w-[200px] h-[50px] bg-green-500"
         onClick={() => {
           sniffRange(
             board,
             entities.cheese,
             board.tiles[entities.cheese.x][entities.cheese.y],
-            20,
-            1000
+            20
           );
         }}
       >
         Sniff
-      </button>
+      </button> */}
     </div>
   );
 };

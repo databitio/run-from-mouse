@@ -4,6 +4,7 @@ import { Consumable, Tile } from "../context/BoardContext";
 import "./Tile.css";
 import { Entity } from "../context/EntityContext";
 import EntityComponent from "./Entity";
+import Cheese from "./Cheese";
 
 //in milliseconds; 5000 is 5 seconds
 export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
@@ -53,17 +54,9 @@ const TileComponent = (props: {
       {Object.keys(tile.occupied).length === 0 ? (
         <></>
       ) : tile.occupied instanceof Entity ? (
-        <EntityComponent tileSize={tileSize} />
+        <EntityComponent tileSize={tileSize} name={tile.occupied.name} />
       ) : tile.occupied instanceof Consumable ? (
-        <img
-          className="bg-yellow-500 rounded-full"
-          src={require("../assets/cheese-icon.jpeg")}
-          style={{ width: tileSize, height: tileSize }}
-          // style={{
-          //   width: (tileSize * 2) / 3,
-          //   height: (tileSize * 2) / 3,
-          // }}
-        />
+        <Cheese size={tileSize} fake={false} />
       ) : (
         <></>
       )}
