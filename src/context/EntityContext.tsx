@@ -27,6 +27,7 @@ export class Entity {
       this_tile.occupied = {} as Entity;
       this.x -= 1;
       next_tile.occupied = this;
+      next_tile.highlighted = false;
       board.setTiles([...board.tiles]);
     }
   };
@@ -46,6 +47,7 @@ export class Entity {
       this_tile.occupied = {} as Entity;
       this.x += 1;
       next_tile.occupied = this;
+      next_tile.highlighted = false;
       board.setTiles([...board.tiles]);
     }
   };
@@ -61,6 +63,7 @@ export class Entity {
       this_tile.occupied = {} as Entity;
       this.y -= 1;
       next_tile.occupied = this;
+      next_tile.highlighted = false;
       board.setTiles([...board.tiles]);
     }
   };
@@ -80,6 +83,7 @@ export class Entity {
       this_tile.occupied = {} as Entity;
       this.y += 1;
       next_tile.occupied = this;
+      next_tile.highlighted = false;
       board.setTiles([...board.tiles]);
     }
   };

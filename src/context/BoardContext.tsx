@@ -32,6 +32,7 @@ export interface Tile {
   highlighted: boolean;
   x: number;
   y: number;
+  nextMove: (board: BoardState) => void;
 }
 
 export interface BoardState {
@@ -61,6 +62,7 @@ export const BoardProvider = (props: any) => {
           sniffed: false,
           highlighted: false,
           occupied: {} as Entity | Consumable,
+          nextMove: () => {},
           x: i,
           y: j,
         };

@@ -46,6 +46,7 @@ const Board = () => {
         onClick={() => {
           sniffRange(
             board,
+            entities.cheese,
             board.tiles[entities.cheese.x][entities.cheese.y],
             20,
             1000
