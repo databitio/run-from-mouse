@@ -39,6 +39,8 @@ const TileComponent = (props: {
           ? "border-[1px] border-slate-500 bg-slate-500 transition-colors cursor-pointer flex items-center justify-center"
           : tile.blocked
           ? "border-[1px] border-slate-300 bg-slate-900 transition-colors cursor-pointer flex items-center justify-center"
+          : tile.highlighted === true
+          ? "border-[1px] bg-red-500 degrade-color cursor-pointer flex items-center justify-center"
           : tile.sniffed === true
           ? "border-[1px] bg-green-300 degrade-color cursor-pointer flex items-center justify-center"
           : "border-[1px] border-slate-300 bg-slate-200 degrade-color cursor-pointer flex items-center justify-center"
@@ -53,13 +55,15 @@ const TileComponent = (props: {
       ) : tile.occupied instanceof Entity ? (
         <EntityComponent tileSize={tileSize} />
       ) : tile.occupied instanceof Consumable ? (
-        <div
-          className="bg-yellow-500 rounded-2xl"
-          style={{
-            width: (tileSize * 2) / 3,
-            height: (tileSize * 2) / 3,
-          }}
-        ></div>
+        <img
+          className="bg-yellow-500 rounded-full"
+          src={require("../assets/cheese-icon.jpeg")}
+          style={{ width: tileSize, height: tileSize }}
+          // style={{
+          //   width: (tileSize * 2) / 3,
+          //   height: (tileSize * 2) / 3,
+          // }}
+        />
       ) : (
         <></>
       )}

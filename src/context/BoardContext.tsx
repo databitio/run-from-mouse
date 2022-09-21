@@ -29,6 +29,7 @@ export interface Tile {
   blocked: boolean;
   occupied: Entity | Consumable;
   sniffed: boolean;
+  highlighted: boolean;
   x: number;
   y: number;
 }
@@ -58,6 +59,7 @@ export const BoardProvider = (props: any) => {
           active: false,
           blocked: false,
           sniffed: false,
+          highlighted: false,
           occupied: {} as Entity | Consumable,
           x: i,
           y: j,

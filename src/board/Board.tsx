@@ -47,7 +47,7 @@ const Board = () => {
           sniffRange(
             board,
             board.tiles[entities.cheese.x][entities.cheese.y],
-            5,
+            20,
             1000
           );
         }}
