@@ -27,8 +27,9 @@ const TileComponent = (props: {
   };
 
   const ActivateTile = async () => {
-    if (!tile.blocked && !tile.active) {
+    if (!tile.blocked && !tile.active && board.chargeLeft > 0) {
       board.tiles[x][y].active = true;
+      board.setChargeLeft(board.chargeLeft - 1);
       board.setTiles([...board.tiles]);
     }
   };

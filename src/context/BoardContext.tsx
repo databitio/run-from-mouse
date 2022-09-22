@@ -8,19 +8,11 @@ export class Consumable {
   x: number;
   y: number;
   speed: number;
-  duration: number;
-  constructor(
-    name: string,
-    x: number,
-    y: number,
-    speed: number,
-    duration: number
-  ) {
+  constructor(name: string, x: number, y: number, speed: number) {
     this.name = name;
     this.x = x;
     this.y = y;
     this.speed = speed;
-    this.duration = duration;
   }
 }
 
@@ -44,6 +36,8 @@ export interface BoardState {
   setTileSize: (tileSize: number) => void;
   chargeLeft: number;
   setChargeLeft: (chargeLeft: number) => void;
+  gameOver: boolean;
+  setGameOver: (gameOver: boolean) => void;
 }
 
 const BoardContext = createContext<BoardState>({} as BoardState);
@@ -72,7 +66,7 @@ export const BoardProvider = (props: any) => {
           i === Math.floor(Math.random() * numberOfTiles) &&
           !new_tile.blocked
         ) {
-          new_tile.occupied = new Consumable("cheese", i, j, 2, 30000);
+          new_tile.occupied = new Consumable("cheese", i, j, 2);
         }
         new_tiles[i].push(new_tile);
       }
@@ -80,10 +74,11 @@ export const BoardProvider = (props: any) => {
     return new_tiles;
   };
 
-  const [numberOfTiles, setNumberOfTiles] = useState(10);
+  const [numberOfTiles, setNumberOfTiles] = useState(5);
   const [tiles, setTiles] = useState<Tile[][]>(createTiles());
-  const [tileSize, setTileSize] = useState(30);
+  const [tileSize, setTileSize] = useState(60);
   const [chargeLeft, setChargeLeft] = useState(100);
+  const [gameOver, setGameOver] = useState(true);
 
   const board: BoardState = {
     numberOfTiles: numberOfTiles,
@@ -94,6 +89,8 @@ export const BoardProvider = (props: any) => {
     setTileSize: setTileSize,
     chargeLeft: chargeLeft,
     setChargeLeft: setChargeLeft,
+    gameOver: gameOver,
+    setGameOver: setGameOver,
   };
 
   return (

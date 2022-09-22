@@ -2,10 +2,13 @@ import TileComponent from "./Tile";
 import useBoard from "../hooks/useBoard";
 import useEntities from "../hooks/useEntities";
 import { sniffRange } from "../search_for_cheese/SniffRadius";
-import { EntityContext } from "../context/EntityContext";
+import { Entity, EntityContext } from "../context/EntityContext";
 import { BoardState } from "../context/BoardContext";
+import { useEffect } from "react";
 
 const SetMoveKeys = (board: BoardState, entities: EntityContext) => {
+  if (board.gameOver) return;
+
   document.onkeydown = checkKey;
 
   function checkKey(e: any) {
@@ -23,6 +26,13 @@ const SetMoveKeys = (board: BoardState, entities: EntityContext) => {
   }
 };
 
+const loopSniff = async (board: BoardState, mouse: Entity) => {
+  let found = true;
+  while (found) {
+    found = await sniffRange(board, mouse);
+  }
+};
+
 const Board = () => {
   const board = useBoard();
   const entities = useEntities();
@@ -31,6 +41,7 @@ const Board = () => {
 
   return (
     <div>
+      <div>Charge left: {board.chargeLeft}</div>
       <section className="bg-neutral-500 relative flex flex-col border-4 border-black">
         {board.tiles.map((rows, rowindex) => (
           <div key={rowindex} className="flex flex-row">
@@ -48,21 +59,16 @@ const Board = () => {
         ))}
       </section>
       <button
-        className="w-[200px] h-[50px] bg-green-500"
+        className="w-[200px] h-[50px] bg-green-500 text-white rounded-md m-2 shadow-md shadow-black/20"
         onClick={() => {
-          sniffRange(
-            board,
-            entities.cheese,
-            board.tiles[entities.cheese.x][entities.cheese.y],
-            20
-          );
+          loopSniff(board, entities.mouse);
+          board.setGameOver(false);
         }}
       >
-        Sniff
+        Start
       </button>
     </div>
   );
 };
 
 export default Board;
-// <canvas style={{ width: 2000, height: 2000, color: "white" }}></canvas>

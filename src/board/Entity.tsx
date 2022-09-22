@@ -7,13 +7,18 @@ const EntityComponent = (props: { tileSize: number; name: string }) => {
 
   if (name === "cheese") return <Cheese size={tileSize} fake={true} />;
   return (
-    <div
-      className="bg-neutral-700 rounded-2xl"
-      style={{
-        width: size,
-        height: size,
-      }}
-    ></div>
+    // <div
+    //   className="bg-neutral-700 rounded-2xl"
+    //   style={{
+    //     width: size,
+    //     height: size,
+    //   }}
+    // ></div>
+    <img
+      className={"rounded-full object-contain"}
+      src={require("../assets/mouse-icon.png")}
+      style={{ width: size * 2, height: size * 2 }}
+    />
   );
 };
 

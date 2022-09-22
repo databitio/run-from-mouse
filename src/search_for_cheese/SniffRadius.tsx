@@ -15,6 +15,7 @@ const resetSniffedTiles = (board: BoardState) => {
   board.tiles.forEach((row) => {
     row.forEach((tile) => {
       tile.sniffed = false;
+      tile.highlighted = false;
     });
   });
   board.setTiles([...board.tiles]);
@@ -33,7 +34,6 @@ const highlightTiles = async (
   let prevTile = endTile;
   while (true) {
     const tile = tiles.get(prevTile);
-    console.log("child and parent: ", prevTile, tile);
     if (tile === undefined || Object.keys(tile).length === 0) {
       break;
     }
@@ -51,33 +51,31 @@ const highlightTiles = async (
     await delay(speed);
   }
   board.setTiles([...board.tiles]);
+  return movesArray.length;
 };
 
-export const sniffRange = async (
-  board: BoardState,
-  mouse: Entity,
-  startTile: Tile,
-  radius: number
-) => {
-  const x = startTile.x;
-  const y = startTile.y;
-  const speed = 1000 / mouse.speed;
+export const sniffRange = async (board: BoardState, mouse: Entity) => {
+  const x = mouse.x;
+  const y = mouse.y;
+  const speed = 750 / mouse.speed;
   //child and parent; start node has no parent
   const visited = new Map<Tile, Tile>();
-  visited.set(startTile, {} as Tile);
+  visited.set(board.tiles[x][y], {} as Tile);
   board.tiles[y][x].sniffed = true;
 
-  for (let i = 0; i < radius; i++) {
+  for (let i = 0; i < board.numberOfTiles * 5; i++) {
     const found = sniffBoard(board, mouse, visited);
     await delay(speed);
     if (Object.keys(found).length > 0) {
-      highlightTiles(board, visited, found, speed);
-      await delay(speed);
+      await highlightTiles(board, visited, found, speed);
       resetSniffedTiles(board);
-      return;
+      await delay(1000);
+
+      return true;
     }
   }
   resetSniffedTiles(board);
+  return false;
 };
 
 //visited is a child, parent map; in this function, children are becoming parents to other tiles

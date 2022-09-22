@@ -21,7 +21,8 @@ export class Entity {
     if (this.x > 0 && !next_tile.blocked && !next_tile.active) {
       if (
         next_tile.occupied instanceof Consumable &&
-        Object.keys(next_tile.occupied).length !== 0
+        Object.keys(next_tile.occupied).length !== 0 &&
+        next_tile.occupied.name !== "mouse"
       )
         this.speed += 1;
       this_tile.occupied = {} as Entity;
@@ -41,7 +42,8 @@ export class Entity {
     ) {
       if (
         next_tile.occupied instanceof Consumable &&
-        Object.keys(next_tile.occupied).length !== 0
+        Object.keys(next_tile.occupied).length !== 0 &&
+        next_tile.occupied.name !== "mouse"
       )
         this.speed += 1;
       this_tile.occupied = {} as Entity;
@@ -57,7 +59,8 @@ export class Entity {
     if (this.y > 0 && !next_tile.blocked && !next_tile.active) {
       if (
         next_tile.occupied instanceof Consumable &&
-        Object.keys(next_tile.occupied).length !== 0
+        Object.keys(next_tile.occupied).length !== 0 &&
+        next_tile.occupied.name !== "mouse"
       )
         this.speed += 1;
       this_tile.occupied = {} as Entity;
@@ -77,7 +80,8 @@ export class Entity {
     ) {
       if (
         next_tile.occupied instanceof Consumable &&
-        Object.keys(next_tile.occupied).length !== 0
+        Object.keys(next_tile.occupied).length !== 0 &&
+        next_tile.occupied.name !== "mouse"
       )
         this.speed += 1;
       this_tile.occupied = {} as Entity;
@@ -106,19 +110,10 @@ export const EntityProvider = (props: any) => {
   const [mouse, setMouse] = useState(new Entity("mouse", 0, 0));
   const [cheese, setCheese] = useState(new Entity("cheese", corner, corner));
 
-  // const unvisitedSet: number[][] = [];
-  // for (let i = 0; i < board.numberOfTiles; i++) {
-  //   for (let j = 0; j < board.numberOfTiles; j++) {
-  //     if (i === mouse.x && j === mouse.y) {
-  //       unvisitedSet[mouse.x][mouse.y] = 0;
-  //     } else unvisitedSet[i][j] = Math.pow(10, 1000);
-  //   }
-  // }
-
   useEffect(() => {
     board.tiles[0][0].occupied = mouse;
     board.tiles[corner][corner].occupied = cheese;
-    board.setTiles(board.tiles);
+    board.setTiles([...board.tiles]);
   }, []);
 
   const entities: EntityContext = {
