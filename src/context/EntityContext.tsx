@@ -21,10 +21,15 @@ export class Entity {
     if (this.x > 0 && !next_tile.blocked && !next_tile.active) {
       if (
         next_tile.occupied instanceof Consumable &&
-        Object.keys(next_tile.occupied).length !== 0 &&
-        next_tile.occupied.name !== "mouse"
+        Object.keys(next_tile.occupied).length !== 0
       )
         this.speed += 1;
+      if (
+        next_tile.occupied instanceof Entity &&
+        Object.keys(next_tile.occupied).length !== 0 &&
+        next_tile.occupied.name === "cheese"
+      )
+        board.setGameOver(true);
       this_tile.occupied = {} as Entity;
       this.x -= 1;
       next_tile.occupied = this;
@@ -42,10 +47,15 @@ export class Entity {
     ) {
       if (
         next_tile.occupied instanceof Consumable &&
-        Object.keys(next_tile.occupied).length !== 0 &&
-        next_tile.occupied.name !== "mouse"
+        Object.keys(next_tile.occupied).length !== 0
       )
         this.speed += 1;
+      if (
+        next_tile.occupied instanceof Entity &&
+        Object.keys(next_tile.occupied).length !== 0 &&
+        next_tile.occupied.name === "cheese"
+      )
+        board.setGameOver(true);
       this_tile.occupied = {} as Entity;
       this.x += 1;
       next_tile.occupied = this;
@@ -59,10 +69,16 @@ export class Entity {
     if (this.y > 0 && !next_tile.blocked && !next_tile.active) {
       if (
         next_tile.occupied instanceof Consumable &&
-        Object.keys(next_tile.occupied).length !== 0 &&
-        next_tile.occupied.name !== "mouse"
+        Object.keys(next_tile.occupied).length !== 0
       )
         this.speed += 1;
+
+      if (
+        next_tile.occupied instanceof Entity &&
+        Object.keys(next_tile.occupied).length !== 0 &&
+        next_tile.occupied.name === "cheese"
+      )
+        board.setGameOver(true);
       this_tile.occupied = {} as Entity;
       this.y -= 1;
       next_tile.occupied = this;
@@ -80,10 +96,16 @@ export class Entity {
     ) {
       if (
         next_tile.occupied instanceof Consumable &&
-        Object.keys(next_tile.occupied).length !== 0 &&
-        next_tile.occupied.name !== "mouse"
+        Object.keys(next_tile.occupied).length !== 0
       )
         this.speed += 1;
+
+      if (
+        next_tile.occupied instanceof Entity &&
+        Object.keys(next_tile.occupied).length !== 0 &&
+        next_tile.occupied.name === "cheese"
+      )
+        board.setGameOver(true);
       this_tile.occupied = {} as Entity;
       this.y += 1;
       next_tile.occupied = this;

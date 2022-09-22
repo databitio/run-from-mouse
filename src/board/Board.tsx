@@ -7,20 +7,22 @@ import { BoardState } from "../context/BoardContext";
 import { useEffect } from "react";
 
 const SetMoveKeys = (board: BoardState, entities: EntityContext) => {
-  if (board.gameOver) return;
-
   document.onkeydown = checkKey;
 
   function checkKey(e: any) {
     e = e || window.event;
 
     if (e.keyCode == "38") {
+      if (board.gameOver) return;
       entities.cheese.MoveUp(board);
     } else if (e.keyCode == "40") {
+      if (board.gameOver) return;
       entities.cheese.MoveDown(board);
     } else if (e.keyCode == "37") {
+      if (board.gameOver) return;
       entities.cheese.MoveLeft(board);
     } else if (e.keyCode == "39") {
+      if (board.gameOver) return;
       entities.cheese.MoveRight(board);
     }
   }
@@ -41,7 +43,14 @@ const Board = () => {
 
   return (
     <div>
-      <div>Charge left: {board.chargeLeft}</div>
+      <div className="flex flex-row justify-between">
+        <div>Charge left: {board.chargeLeft}</div>
+        {board.gameOver ? (
+          <div className="text-red-500 font-bold text-2xl">Game Over</div>
+        ) : (
+          <></>
+        )}
+      </div>
       <section className="bg-neutral-500 relative flex flex-col border-4 border-black">
         {board.tiles.map((rows, rowindex) => (
           <div key={rowindex} className="flex flex-row">
