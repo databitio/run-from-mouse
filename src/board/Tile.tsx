@@ -4,6 +4,7 @@ import { Consumable, Tile } from "../context/BoardContext";
 import "./Tile.css";
 import { Entity } from "../context/EntityContext";
 import EntityComponent from "./Entity";
+import { BoardState } from "../context/BoardContext";
 import Cheese from "./Cheese";
 
 //in milliseconds; 5000 is 5 seconds
@@ -11,12 +12,10 @@ export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 const TileComponent = (props: {
   tile: Tile;
-  x: number;
-  y: number;
   tileSize: number;
+  board: BoardState;
 }) => {
-  const { tile, tileSize } = props;
-  const board = useBoard();
+  const { tile, tileSize, board } = props;
   const x = tile.x;
   const y = tile.y;
 

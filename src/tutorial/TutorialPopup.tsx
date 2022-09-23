@@ -4,7 +4,10 @@ import ControlsSlide from "./ControlsSlide";
 import EatTheCheeseSlide from "./EatTheCheeseSlide";
 import IntroSlide from "./IntroSlide";
 import MouseSniffingSlide from "./MouseSniffingSlide";
-import RunForExitSlide from "./RunForExitSlide";
+import LastCheeseStanding from "./LastCheeseStanding";
+import WinConditionSlide from "./WinConditionSlide";
+import DrawSlide from "./DrawSlide";
+import "./Tutorial.css";
 
 const TutorialPopup = () => {
   const [tutorialVisible, setTutorialVisible] = useState(true);
@@ -12,9 +15,11 @@ const TutorialPopup = () => {
   const slides = [
     <IntroSlide />,
     <ControlsSlide />,
+    <DrawSlide />,
     <EatTheCheeseSlide />,
     <MouseSniffingSlide />,
-    <RunForExitSlide />,
+    <LastCheeseStanding />,
+    <WinConditionSlide />,
   ];
 
   if (tutorialVisible)

@@ -2,11 +2,12 @@ import TileComponent from "./Tile";
 import useBoard from "../hooks/useBoard";
 import useEntities from "../hooks/useEntities";
 import { sniffRange } from "../search_for_cheese/SniffForCheese";
-import { Entity, EntityContext } from "../context/EntityContext";
+import { Entity } from "../context/EntityContext";
 import { BoardState } from "../context/BoardContext";
-import { useEffect } from "react";
+import { isCheeseLeft } from "../search_for_cheese/SniffForCheese";
+import { useState } from "react";
 
-const SetMoveKeys = (board: BoardState, entities: EntityContext) => {
+export const SetMoveKeys = (board: BoardState, entity: Entity) => {
   document.onkeydown = checkKey;
 
   function checkKey(e: any) {
@@ -14,16 +15,16 @@ const SetMoveKeys = (board: BoardState, entities: EntityContext) => {
 
     if (e.keyCode == "38") {
       if (board.gameOver) return;
-      entities.cheese.MoveUp(board);
+      entity.MoveUp(board);
     } else if (e.keyCode == "40") {
       if (board.gameOver) return;
-      entities.cheese.MoveDown(board);
+      entity.MoveDown(board);
     } else if (e.keyCode == "37") {
       if (board.gameOver) return;
-      entities.cheese.MoveLeft(board);
+      entity.MoveLeft(board);
     } else if (e.keyCode == "39") {
       if (board.gameOver) return;
-      entities.cheese.MoveRight(board);
+      entity.MoveRight(board);
     }
   }
 };
@@ -31,9 +32,11 @@ const SetMoveKeys = (board: BoardState, entities: EntityContext) => {
 const loopSniff = async (board: BoardState, mouse: Entity) => {
   let found = true;
   while (found || !board.gameOver) {
-    // if (isCheeseLeft(board)) {
-    //   console.log("more cheese!");
-    // } else console.log("cheese gone!");
+    if (isCheeseLeft(board)) {
+      console.log("more cheese!");
+    } else {
+      mouse.speed *= 2;
+    }
     found = await sniffRange(board, mouse);
   }
 };
@@ -41,13 +44,14 @@ const loopSniff = async (board: BoardState, mouse: Entity) => {
 const Board = () => {
   const board = useBoard();
   const entities = useEntities();
+  const [start, setStart] = useState(true);
 
-  SetMoveKeys(board, entities);
+  SetMoveKeys(board, entities.cheese);
 
   return (
     <div>
       <div className="flex flex-col justify-between">
-        {board.gameOver ? (
+        {!start && board.gameOver ? (
           <div className="text-red-500 font-bold text-2xl text-center">
             Game Over
           </div>
@@ -63,24 +67,28 @@ const Board = () => {
               <div key={colindex + rowindex}>
                 <TileComponent
                   tile={tile}
-                  x={rowindex}
-                  y={colindex}
                   tileSize={board.tileSize}
+                  board={board}
                 />
               </div>
             ))}
           </div>
         ))}
       </section>
-      <button
-        className="w-[200px] h-[50px] bg-green-500 text-white rounded-md m-2 shadow-md shadow-black/20"
-        onClick={() => {
-          loopSniff(board, entities.mouse);
-          board.setGameOver(false);
-        }}
-      >
-        Start
-      </button>
+      {start ? (
+        <button
+          className="w-[200px] h-[50px] bg-green-500 text-white rounded-md m-2 shadow-md shadow-black/20"
+          onClick={() => {
+            loopSniff(board, entities.mouse);
+            board.setGameOver(false);
+            setStart(false);
+          }}
+        >
+          Start
+        </button>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

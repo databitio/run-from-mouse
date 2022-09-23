@@ -46,43 +46,8 @@ const BoardContext = createContext<BoardState>({} as BoardState);
 export const BoardProvider = (props: any) => {
   const { children } = props;
 
-  const createTiles = () => {
-    const new_tiles: Tile[][] = [];
-    for (let i = 0; i < numberOfTiles; i++) {
-      new_tiles.push([]);
-      for (let j = 0; j < numberOfTiles; j++) {
-        const new_tile = {
-          active: false,
-          blocked: false,
-          sniffed: false,
-          highlighted: false,
-          occupied: {} as Entity | Consumable,
-          nextMove: () => {},
-          x: i,
-          y: j,
-        };
-        if (
-          i === Math.floor(Math.random() * numberOfTiles) &&
-          i !== 0 &&
-          j !== 0 &&
-          i !== numberOfTiles - 1 &&
-          j !== numberOfTiles - 1
-        )
-          new_tile.blocked = true;
-        if (
-          i === Math.floor(Math.random() * numberOfTiles) &&
-          !new_tile.blocked
-        ) {
-          new_tile.occupied = new Consumable("cheese", i, j, 2);
-        }
-        new_tiles[i].push(new_tile);
-      }
-    }
-    return new_tiles;
-  };
-
   const [numberOfTiles, setNumberOfTiles] = useState(5);
-  const [tiles, setTiles] = useState<Tile[][]>(createTiles());
+  const [tiles, setTiles] = useState<Tile[][]>(createTiles(numberOfTiles));
   const [tileSize, setTileSize] = useState(45);
   const [chargeLeft, setChargeLeft] = useState(20);
   const [gameOver, setGameOver] = useState(true);
@@ -106,3 +71,39 @@ export const BoardProvider = (props: any) => {
 };
 
 export default BoardContext;
+
+export const createTiles = (numberOfTiles: number) => {
+  const new_tiles: Tile[][] = [];
+  for (let i = 0; i < numberOfTiles; i++) {
+    new_tiles.push([]);
+    for (let j = 0; j < numberOfTiles; j++) {
+      const new_tile = {
+        active: false,
+        blocked: false,
+        sniffed: false,
+        highlighted: false,
+        occupied: {} as Entity | Consumable,
+        nextMove: () => {},
+        x: i,
+        y: j,
+      };
+      if (
+        i === Math.floor(Math.random() * numberOfTiles) &&
+        i !== 0 &&
+        j !== 0 &&
+        i !== numberOfTiles - 1 &&
+        j !== numberOfTiles - 1
+      )
+        new_tile.blocked = true;
+      if (
+        i === Math.floor(Math.random() * numberOfTiles) &&
+        !new_tile.blocked
+      ) {
+        new_tile.occupied = new Consumable("cheese", i, j, 2);
+      }
+      // if (new_tile)
+      new_tiles[i].push(new_tile);
+    }
+  }
+  return new_tiles;
+};
