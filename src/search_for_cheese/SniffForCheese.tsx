@@ -3,6 +3,7 @@ import { delay } from "../board/Tile";
 import { BoardState } from "../context/BoardContext";
 import { Tile } from "../context/BoardContext";
 import { Entity } from "../context/EntityContext";
+import { Consumable } from "../context/BoardContext";
 
 const isActive = (tile: Tile) => {
   if (tile.sniffed || tile.active || tile.blocked) {
@@ -108,6 +109,12 @@ export const sniffBoard = (
       visited.set(tiles[x - 1][y], tiles[x][y]);
       if (Object.keys(tiles[y][x - 1].occupied).length > 0) {
         found = tiles[x - 1][y];
+        if (
+          tiles[y][x - 1].occupied.name === "cheese" &&
+          tiles[y][x - 1].occupied instanceof Entity
+        ) {
+          board.setGameOver(true);
+        }
       }
     }
     if (x < board.numberOfTiles - 1 && !isActive(tiles[y][x + 1])) {
@@ -116,6 +123,12 @@ export const sniffBoard = (
       visited.set(tiles[x + 1][y], tiles[x][y]);
       if (Object.keys(tiles[y][x + 1].occupied).length > 0) {
         found = tiles[x + 1][y];
+        if (
+          tiles[y][x + 1].occupied.name === "cheese" &&
+          tiles[y][x + 1].occupied instanceof Entity
+        ) {
+          board.setGameOver(true);
+        }
       }
     }
     if (y > 0 && !isActive(tiles[y - 1][x])) {
@@ -124,6 +137,12 @@ export const sniffBoard = (
       visited.set(tiles[x][y - 1], tiles[x][y]);
       if (Object.keys(tiles[y - 1][x].occupied).length > 0) {
         found = tiles[x][y - 1];
+        if (
+          tiles[y - 1][x].occupied.name === "cheese" &&
+          tiles[y - 1][x].occupied instanceof Entity
+        ) {
+          board.setGameOver(true);
+        }
       }
     }
     if (y < board.numberOfTiles - 1 && !isActive(tiles[y + 1][x])) {
@@ -132,10 +151,27 @@ export const sniffBoard = (
       visited.set(tiles[x][y + 1], tiles[x][y]);
       if (Object.keys(tiles[y + 1][x].occupied).length > 0) {
         found = tiles[x][y + 1];
+        if (
+          tiles[y + 1][x].occupied.name === "cheese" &&
+          tiles[y + 1][x].occupied instanceof Entity
+        ) {
+          board.setGameOver(true);
+        }
       }
     }
   });
 
   board.setTiles([...tiles]);
   return found;
+};
+
+//returns whether there is any cheese left on the board
+export const isCheeseLeft = (board: BoardState) => {
+  for (let i = 0; i < board.numberOfTiles; i++) {
+    const found = board.tiles[i].find(
+      (tile) => tile.occupied instanceof Consumable
+    );
+    if (found !== undefined) return true;
+  }
+  return false;
 };

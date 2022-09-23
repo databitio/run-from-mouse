@@ -43,19 +43,13 @@ const TutorialPopup = () => {
         </section>
         <section className="absolute bottom-0 mb-4 flex flex-row w-full justify-center text-center pointer-events-none">
           {slides.map((_, index) => (
-            <>
+            <div key={index}>
               {currentSlide === index ? (
-                <div
-                  key={index}
-                  className="w-[4px] h-[4px] bg-slate-400 mx-1 rounded-full"
-                ></div>
+                <div className="w-[4px] h-[4px] bg-slate-400 mx-1 rounded-full" />
               ) : (
-                <div
-                  key={index}
-                  className="w-[4px] h-[4px] bg-slate-600 mx-1 rounded-full"
-                ></div>
+                <div className="w-[4px] h-[4px] bg-slate-600 mx-1 rounded-full" />
               )}
-            </>
+            </div>
           ))}
         </section>
         {slides[currentSlide]}

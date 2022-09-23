@@ -30,6 +30,12 @@ export class Entity {
         next_tile.occupied.name === "cheese"
       )
         board.setGameOver(true);
+      if (
+        next_tile.occupied instanceof Consumable &&
+        Object.keys(next_tile.occupied).length !== 0 &&
+        this.name === "cheese"
+      )
+        board.setChargeLeft(board.chargeLeft + 5);
       this_tile.occupied = {} as Entity;
       this.x -= 1;
       next_tile.occupied = this;
@@ -56,6 +62,12 @@ export class Entity {
         next_tile.occupied.name === "cheese"
       )
         board.setGameOver(true);
+      if (
+        next_tile.occupied instanceof Consumable &&
+        Object.keys(next_tile.occupied).length !== 0 &&
+        this.name === "cheese"
+      )
+        board.setChargeLeft(board.chargeLeft + 5);
       this_tile.occupied = {} as Entity;
       this.x += 1;
       next_tile.occupied = this;
@@ -79,6 +91,12 @@ export class Entity {
         next_tile.occupied.name === "cheese"
       )
         board.setGameOver(true);
+      if (
+        next_tile.occupied instanceof Consumable &&
+        Object.keys(next_tile.occupied).length !== 0 &&
+        this.name === "cheese"
+      )
+        board.setChargeLeft(board.chargeLeft + 5);
       this_tile.occupied = {} as Entity;
       this.y -= 1;
       next_tile.occupied = this;
@@ -99,13 +117,18 @@ export class Entity {
         Object.keys(next_tile.occupied).length !== 0
       )
         this.speed += 1;
-
       if (
         next_tile.occupied instanceof Entity &&
         Object.keys(next_tile.occupied).length !== 0 &&
         next_tile.occupied.name === "cheese"
       )
         board.setGameOver(true);
+      if (
+        next_tile.occupied instanceof Consumable &&
+        Object.keys(next_tile.occupied).length !== 0 &&
+        this.name === "cheese"
+      )
+        board.setChargeLeft(board.chargeLeft + 5);
       this_tile.occupied = {} as Entity;
       this.y += 1;
       next_tile.occupied = this;

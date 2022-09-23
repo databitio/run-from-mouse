@@ -1,7 +1,7 @@
 import TileComponent from "./Tile";
 import useBoard from "../hooks/useBoard";
 import useEntities from "../hooks/useEntities";
-import { sniffRange } from "../search_for_cheese/SniffRadius";
+import { sniffRange } from "../search_for_cheese/SniffForCheese";
 import { Entity, EntityContext } from "../context/EntityContext";
 import { BoardState } from "../context/BoardContext";
 import { useEffect } from "react";
@@ -30,7 +30,10 @@ const SetMoveKeys = (board: BoardState, entities: EntityContext) => {
 
 const loopSniff = async (board: BoardState, mouse: Entity) => {
   let found = true;
-  while (found) {
+  while (found || !board.gameOver) {
+    // if (isCheeseLeft(board)) {
+    //   console.log("more cheese!");
+    // } else console.log("cheese gone!");
     found = await sniffRange(board, mouse);
   }
 };
@@ -43,13 +46,15 @@ const Board = () => {
 
   return (
     <div>
-      <div className="flex flex-row justify-between">
-        <div>Charge left: {board.chargeLeft}</div>
+      <div className="flex flex-col justify-between">
         {board.gameOver ? (
-          <div className="text-red-500 font-bold text-2xl">Game Over</div>
+          <div className="text-red-500 font-bold text-2xl text-center">
+            Game Over
+          </div>
         ) : (
           <></>
         )}
+        <div>Charge left: {board.chargeLeft}</div>
       </div>
       <section className="bg-neutral-500 relative flex flex-col border-4 border-black">
         {board.tiles.map((rows, rowindex) => (

@@ -13,6 +13,7 @@ function App() {
         <input className="w-full" placeholder="Mouse name" />
       </form>
       <div className="w-[300px]"></div> */}
+      <section className="absolute top-0 h-[50px] w-full bg-slate-600"></section>
       <TutorialPopup />
       <Board />
     </main>

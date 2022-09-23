@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import { isCheeseLeft } from "../search_for_cheese/SniffForCheese";
 import { Entity } from "./EntityContext";
 
 export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
@@ -60,7 +61,13 @@ export const BoardProvider = (props: any) => {
           x: i,
           y: j,
         };
-        if (i === Math.floor(Math.random() * numberOfTiles))
+        if (
+          i === Math.floor(Math.random() * numberOfTiles) &&
+          i !== 0 &&
+          j !== 0 &&
+          i !== numberOfTiles - 1 &&
+          j !== numberOfTiles - 1
+        )
           new_tile.blocked = true;
         if (
           i === Math.floor(Math.random() * numberOfTiles) &&
@@ -76,8 +83,8 @@ export const BoardProvider = (props: any) => {
 
   const [numberOfTiles, setNumberOfTiles] = useState(5);
   const [tiles, setTiles] = useState<Tile[][]>(createTiles());
-  const [tileSize, setTileSize] = useState(60);
-  const [chargeLeft, setChargeLeft] = useState(100);
+  const [tileSize, setTileSize] = useState(45);
+  const [chargeLeft, setChargeLeft] = useState(20);
   const [gameOver, setGameOver] = useState(true);
 
   const board: BoardState = {
