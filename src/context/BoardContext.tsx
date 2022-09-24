@@ -46,9 +46,9 @@ const BoardContext = createContext<BoardState>({} as BoardState);
 export const BoardProvider = (props: any) => {
   const { children } = props;
 
-  const [numberOfTiles, setNumberOfTiles] = useState(5);
+  const [numberOfTiles, setNumberOfTiles] = useState(7);
   const [tiles, setTiles] = useState<Tile[][]>(createTiles(numberOfTiles));
-  const [tileSize, setTileSize] = useState(45);
+  const [tileSize, setTileSize] = useState(60);
   const [chargeLeft, setChargeLeft] = useState(20);
   const [gameOver, setGameOver] = useState(true);
 

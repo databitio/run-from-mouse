@@ -19,12 +19,12 @@ const TutorialPopup = () => {
     <EatTheCheeseSlide />,
     <MouseSniffingSlide />,
     <LastCheeseStanding />,
-    <WinConditionSlide />,
+    // <WinConditionSlide />,
   ];
 
   if (tutorialVisible)
     return (
-      <main className="absolute w-[400px] h-[400px] z-30 bg-neutral-200 shadow-sm shadow-black/20 rounded-md">
+      <main className="absolute w-[450px] h-[450px] z-30 bg-neutral-200 shadow-sm shadow-black/20 rounded-md">
         <section className="absolute m-3">
           <FaTimes
             onClick={() => setTutorialVisible(false)}
