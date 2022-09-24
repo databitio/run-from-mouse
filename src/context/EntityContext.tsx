@@ -3,6 +3,29 @@ import { BoardState, Consumable, Tile } from "./BoardContext";
 import useBoard from "../hooks/useBoard";
 import { delay } from "../board/Tile";
 
+const isEntity = (object: any) => {
+  return object instanceof Entity && Object.keys(object).length !== 0;
+};
+const isConsumable = (object: any) => {
+  return object instanceof Consumable && Object.keys(object).length !== 0;
+};
+
+const MoveConditions = (
+  board: BoardState,
+  entity: Entity,
+  object: Entity | Consumable
+) => {
+  if (isConsumable(object)) entity.speed += 1;
+  if (isEntity(object) && object.name === "cheese") board.setGameOver(true);
+  if (isConsumable(object) && entity.name === "cheese")
+    board.setChargeLeft(board.chargeLeft + 5);
+  if (isEntity(object) && object.name === "mouse") {
+    board.setGameOver(true);
+    return true;
+  }
+  return false;
+};
+
 export class Entity {
   name: string;
   x: number;
@@ -18,24 +41,12 @@ export class Entity {
   MoveLeft = (board: BoardState) => {
     const this_tile = board.tiles[this.y][this.x];
     const next_tile = board.tiles[this.y][this.x - 1];
+
     if (this.x > 0 && !next_tile.blocked && !next_tile.active) {
-      if (
-        next_tile.occupied instanceof Consumable &&
-        Object.keys(next_tile.occupied).length !== 0
-      )
-        this.speed += 1;
-      if (
-        next_tile.occupied instanceof Entity &&
-        Object.keys(next_tile.occupied).length !== 0 &&
-        next_tile.occupied.name === "cheese"
-      )
-        board.setGameOver(true);
-      if (
-        next_tile.occupied instanceof Consumable &&
-        Object.keys(next_tile.occupied).length !== 0 &&
-        this.name === "cheese"
-      )
-        board.setChargeLeft(board.chargeLeft + 5);
+      if (MoveConditions(board, this, next_tile.occupied)) {
+        return;
+      }
+
       this_tile.occupied = {} as Entity;
       this.x -= 1;
       next_tile.occupied = this;
@@ -51,23 +62,10 @@ export class Entity {
       !next_tile.blocked &&
       !next_tile.active
     ) {
-      if (
-        next_tile.occupied instanceof Consumable &&
-        Object.keys(next_tile.occupied).length !== 0
-      )
-        this.speed += 1;
-      if (
-        next_tile.occupied instanceof Entity &&
-        Object.keys(next_tile.occupied).length !== 0 &&
-        next_tile.occupied.name === "cheese"
-      )
-        board.setGameOver(true);
-      if (
-        next_tile.occupied instanceof Consumable &&
-        Object.keys(next_tile.occupied).length !== 0 &&
-        this.name === "cheese"
-      )
-        board.setChargeLeft(board.chargeLeft + 5);
+      if (MoveConditions(board, this, next_tile.occupied)) {
+        return;
+      }
+
       this_tile.occupied = {} as Entity;
       this.x += 1;
       next_tile.occupied = this;
@@ -79,24 +77,10 @@ export class Entity {
     const this_tile = board.tiles[this.y][this.x];
     const next_tile = board.tiles[this.y - 1][this.x];
     if (this.y > 0 && !next_tile.blocked && !next_tile.active) {
-      if (
-        next_tile.occupied instanceof Consumable &&
-        Object.keys(next_tile.occupied).length !== 0
-      )
-        this.speed += 1;
+      if (MoveConditions(board, this, next_tile.occupied)) {
+        return;
+      }
 
-      if (
-        next_tile.occupied instanceof Entity &&
-        Object.keys(next_tile.occupied).length !== 0 &&
-        next_tile.occupied.name === "cheese"
-      )
-        board.setGameOver(true);
-      if (
-        next_tile.occupied instanceof Consumable &&
-        Object.keys(next_tile.occupied).length !== 0 &&
-        this.name === "cheese"
-      )
-        board.setChargeLeft(board.chargeLeft + 5);
       this_tile.occupied = {} as Entity;
       this.y -= 1;
       next_tile.occupied = this;
@@ -112,23 +96,10 @@ export class Entity {
       !next_tile.blocked &&
       !next_tile.active
     ) {
-      if (
-        next_tile.occupied instanceof Consumable &&
-        Object.keys(next_tile.occupied).length !== 0
-      )
-        this.speed += 1;
-      if (
-        next_tile.occupied instanceof Entity &&
-        Object.keys(next_tile.occupied).length !== 0 &&
-        next_tile.occupied.name === "cheese"
-      )
-        board.setGameOver(true);
-      if (
-        next_tile.occupied instanceof Consumable &&
-        Object.keys(next_tile.occupied).length !== 0 &&
-        this.name === "cheese"
-      )
-        board.setChargeLeft(board.chargeLeft + 5);
+      if (MoveConditions(board, this, next_tile.occupied)) {
+        return;
+      }
+
       this_tile.occupied = {} as Entity;
       this.y += 1;
       next_tile.occupied = this;
@@ -159,7 +130,7 @@ export const EntityProvider = (props: any) => {
     board.tiles[0][0].occupied = mouse;
     board.tiles[corner][corner].occupied = cheese;
     board.setTiles([...board.tiles]);
-  }, []);
+  }, [mouse]);
 
   const entities: EntityContext = {
     mouse: mouse,

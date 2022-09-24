@@ -41,15 +41,18 @@ const loopSniff = async (board: BoardState, mouse: Entity) => {
   }
 };
 
-const Board = () => {
+const Board = (props: {
+  start: boolean;
+  setStart: (start: boolean) => void;
+}) => {
+  const { start, setStart } = props;
   const board = useBoard();
   const entities = useEntities();
-  const [start, setStart] = useState(true);
 
   SetMoveKeys(board, entities.cheese);
 
   return (
-    <div>
+    <div className="h-full m-12 bg-slate-400">
       <div className="flex flex-col justify-between">
         {!start && board.gameOver ? (
           <div className="text-red-500 font-bold text-2xl text-center">
@@ -58,7 +61,9 @@ const Board = () => {
         ) : (
           <></>
         )}
-        <div>Charge left: {board.chargeLeft}</div>
+        <div className="max-w-[200px] min-w-[50px]">
+          Charge left: {board.chargeLeft}
+        </div>
       </div>
       <section className="bg-neutral-500 relative flex flex-col border-4 border-black">
         {board.tiles.map((rows, rowindex) => (
@@ -77,7 +82,7 @@ const Board = () => {
       </section>
       {start ? (
         <button
-          className="w-[200px] h-[50px] bg-green-500 text-white rounded-md m-2 shadow-md shadow-black/20"
+          className="max-w-[200px] w-full min-w-[50px] h-[50px] bg-green-500 text-white rounded-md my-2 shadow-md shadow-black/20"
           onClick={() => {
             loopSniff(board, entities.mouse);
             board.setGameOver(false);

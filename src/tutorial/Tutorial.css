@@ -1,11 +1,9 @@
 .introDrawAnimation {
-    /* animation: 4s ease linear infinite drawAnimation; */
     animation-name: drawAnimation;
     animation-duration: 4s;
     animation-iteration-count: infinite;
     animation-delay: 300ms;
     animation-timing-function: ease-in-out;
-    /* anim */
 }
 
 @keyframes drawAnimation {
