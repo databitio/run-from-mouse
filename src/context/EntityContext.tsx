@@ -33,6 +33,7 @@ const MoveConditions = (board: BoardState, entity: Entity, next_tile: Tile) => {
   }
   if (entity.name === "cheese" && next_tile.exit === true) {
     board.setWin(true);
+    board.setGameOver(true);
   }
   if (next_tile.sniffed && entity.name === "cheese") {
     board.setGameOver(true);
