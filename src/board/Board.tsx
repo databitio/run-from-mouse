@@ -30,9 +30,9 @@ export const SetMoveKeys = (board: BoardState, entity: Entity) => {
 const loopSniff = async (board: BoardState, mouse: Entity) => {
   let found = true;
   while (found) {
-    if (board.win || board.gameOver) {
-      return;
-    }
+    // if (board.win || board.gameOver) {
+    //   return;
+    // }
     found = await sniffRange(board, mouse);
   }
 };
