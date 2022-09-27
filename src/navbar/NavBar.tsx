@@ -36,6 +36,7 @@ const NavBar = (props: {
     const new_tiles = createTiles(numberOfTiles);
     board.setTiles(new_tiles);
     setStart(true);
+    board.setWin(false);
   };
 
   return (
