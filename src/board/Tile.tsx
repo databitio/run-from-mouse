@@ -38,6 +38,8 @@ const TileComponent = (props: {
       className={
         tile.active
           ? "border-[1px] border-slate-500 bg-slate-500 transition-colors cursor-pointer flex items-center justify-center"
+          : tile.exit
+          ? "border-[1px] border-slate-500 bg-purple-500 transition-colors cursor-pointer flex items-center justify-center"
           : tile.blocked
           ? "border-[1px] border-slate-300 bg-slate-900 transition-colors cursor-pointer flex items-center justify-center"
           : tile.highlighted === true

@@ -14,6 +14,7 @@ const DrawSlide = () => {
   const [tileSize, setTileSize] = useState(60);
   const [chargeLeft, setChargeLeft] = useState(9999);
   const [gameOver, setGameOver] = useState(false);
+  const [win, setWin] = useState(false);
 
   const board: BoardState = {
     numberOfTiles: numberOfTiles,
@@ -26,6 +27,8 @@ const DrawSlide = () => {
     setChargeLeft: setChargeLeft,
     gameOver: gameOver,
     setGameOver: setGameOver,
+    win: win,
+    setWin: setWin,
   };
 
   useEffect(() => {

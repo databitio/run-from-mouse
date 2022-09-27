@@ -79,7 +79,7 @@ export const sniffRange = async (board: BoardState, mouse: Entity) => {
   return false;
 };
 
-//visited is a child, parent map; in this function, children are becoming parents to other tiles
+// visited is a child, parent map; in this function, children are becoming parents to other tiles
 export const sniffBoard = (
   board: BoardState,
   mouse: Entity,
@@ -175,3 +175,78 @@ export const isCheeseLeft = (board: BoardState) => {
   }
   return false;
 };
+
+//visited is a child, parent map; in this function, children are becoming parents to other tiles
+// export const sniffBoard = (
+//   board: BoardState,
+//   mouse: Entity,
+//   visited: Map<Tile, Tile>
+// ) => {
+//   const tiles = board.tiles;
+//   let found = {} as Tile;
+//   const MAX = visited.size;
+//   let iterator = 0;
+
+//   visited.forEach((child, parent) => {
+//     if (Object.keys(parent).length <= 0) {
+//       return;
+//     }
+
+//     if (iterator >= MAX) {
+//       return;
+//     }
+
+//     iterator++;
+
+//     const x = parent.x;
+//     const y = parent.y;
+
+//     if (x > 0 && !isActive(tiles[y][x - 1])) {
+//       visited.set(tiles[x][y], tiles[x - 1][y]);
+//       found = SniffLogic(board, mouse, visited, tiles[x][y], tiles[x - 1][y]);
+//     }
+//     if (x < board.numberOfTiles - 1 && !isActive(tiles[y][x + 1])) {
+//       visited.set(tiles[x][y], tiles[x + 1][y]);
+//       found = SniffLogic(board, mouse, visited, tiles[x][y], tiles[x + 1][y]);
+//     }
+//     if (y > 0 && !isActive(tiles[y - 1][x])) {
+//       visited.set(tiles[x][y], tiles[x][y - 1]);
+//       found = SniffLogic(board, mouse, visited, tiles[x][y], tiles[x][y - 1]);
+//     }
+//     if (y < board.numberOfTiles - 1 && !isActive(tiles[y + 1][x])) {
+//       visited.set(tiles[x][y], tiles[x][y + 1]);
+//       found = SniffLogic(board, mouse, visited, tiles[x][y], tiles[x][y + 1]);
+//     }
+//   });
+
+//   return found;
+// };
+
+// const SniffLogic = (
+//   board: BoardState,
+//   mouse: Entity,
+//   visited: Map<Tile, Tile>,
+//   this_tile: Tile,
+//   next_tile: Tile
+// ) => {
+//   let found = {} as Tile;
+//   const nx = next_tile.x;
+//   const ny = next_tile.y;
+//   const tiles = board.tiles;
+
+//   tiles[ny][nx].sniffed = true;
+//   tiles[ny][nx].nextMove = mouse.MoveLeft;
+//   visited.set(next_tile, this_tile);
+//   if (Object.keys(tiles[ny][nx].occupied).length > 0) {
+//     found = next_tile;
+//     if (
+//       tiles[ny][nx].occupied.name === "cheese" &&
+//       tiles[ny][nx].occupied instanceof Entity
+//     ) {
+//       board.setGameOver(true);
+//     }
+//   }
+
+//   board.setTiles([...tiles]);
+//   return found;
+// };

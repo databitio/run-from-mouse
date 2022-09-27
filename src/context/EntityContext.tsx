@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { BoardState, Consumable, Tile } from "./BoardContext";
 import useBoard from "../hooks/useBoard";
-import { delay } from "../board/Tile";
+import { isCheeseLeft } from "../search_for_cheese/SniffForCheese";
 
 const isEntity = (object: any) => {
   return object instanceof Entity && Object.keys(object).length !== 0;
@@ -10,20 +10,43 @@ const isConsumable = (object: any) => {
   return object instanceof Consumable && Object.keys(object).length !== 0;
 };
 
-const MoveConditions = (
-  board: BoardState,
-  entity: Entity,
-  object: Entity | Consumable
-) => {
+const MoveConditions = (board: BoardState, entity: Entity, next_tile: Tile) => {
+  const object = next_tile.occupied;
+  const x = entity.x;
+  const y = entity.y;
+
+  if (board.win) {
+    board.tiles[x][y].occupied = {} as Entity;
+    next_tile.highlighted = false;
+    board.setTiles([...board.tiles]);
+    return true;
+  }
   if (isConsumable(object)) entity.speed += 1;
   if (isEntity(object) && object.name === "cheese") board.setGameOver(true);
   if (isConsumable(object) && entity.name === "cheese")
     board.setChargeLeft(board.chargeLeft + 5);
+
+  //if cheese moves onto sniffed tile
   if (isEntity(object) && object.name === "mouse") {
     board.setGameOver(true);
     return true;
   }
+  if (entity.name === "cheese" && next_tile.exit === true) {
+    board.setWin(true);
+  }
+  if (next_tile.sniffed && entity.name === "cheese") {
+    board.setGameOver(true);
+  }
   return false;
+};
+
+const revealExits = (board: BoardState, entity: Entity) => {
+  if (!isCheeseLeft(board)) {
+    board.tiles[0][0].exit = true;
+    board.tiles[board.numberOfTiles - 1][board.numberOfTiles - 1].exit = true;
+    entity.speed *= 2;
+    board.setTiles([...board.tiles]);
+  }
 };
 
 export class Entity {
@@ -43,7 +66,7 @@ export class Entity {
     const next_tile = board.tiles[this.y][this.x - 1];
 
     if (this.x > 0 && !next_tile.blocked && !next_tile.active) {
-      if (MoveConditions(board, this, next_tile.occupied)) {
+      if (MoveConditions(board, this, next_tile)) {
         return;
       }
 
@@ -52,8 +75,11 @@ export class Entity {
       next_tile.occupied = this;
       next_tile.highlighted = false;
       board.setTiles([...board.tiles]);
+
+      revealExits(board, this);
     }
   };
+
   MoveRight = (board: BoardState) => {
     const this_tile = board.tiles[this.y][this.x];
     const next_tile = board.tiles[this.y][this.x + 1];
@@ -62,7 +88,7 @@ export class Entity {
       !next_tile.blocked &&
       !next_tile.active
     ) {
-      if (MoveConditions(board, this, next_tile.occupied)) {
+      if (MoveConditions(board, this, next_tile)) {
         return;
       }
 
@@ -71,13 +97,16 @@ export class Entity {
       next_tile.occupied = this;
       next_tile.highlighted = false;
       board.setTiles([...board.tiles]);
+
+      revealExits(board, this);
     }
   };
+
   MoveUp = (board: BoardState) => {
     const this_tile = board.tiles[this.y][this.x];
     const next_tile = board.tiles[this.y - 1][this.x];
     if (this.y > 0 && !next_tile.blocked && !next_tile.active) {
-      if (MoveConditions(board, this, next_tile.occupied)) {
+      if (MoveConditions(board, this, next_tile)) {
         return;
       }
 
@@ -86,8 +115,11 @@ export class Entity {
       next_tile.occupied = this;
       next_tile.highlighted = false;
       board.setTiles([...board.tiles]);
+
+      revealExits(board, this);
     }
   };
+
   MoveDown = (board: BoardState) => {
     const this_tile = board.tiles[this.y][this.x];
     const next_tile = board.tiles[this.y + 1][this.x];
@@ -96,7 +128,7 @@ export class Entity {
       !next_tile.blocked &&
       !next_tile.active
     ) {
-      if (MoveConditions(board, this, next_tile.occupied)) {
+      if (MoveConditions(board, this, next_tile)) {
         return;
       }
 
@@ -104,7 +136,10 @@ export class Entity {
       this.y += 1;
       next_tile.occupied = this;
       next_tile.highlighted = false;
+
       board.setTiles([...board.tiles]);
+
+      revealExits(board, this);
     }
   };
 }

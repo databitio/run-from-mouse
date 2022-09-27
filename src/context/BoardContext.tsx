@@ -23,6 +23,7 @@ export interface Tile {
   occupied: Entity | Consumable;
   sniffed: boolean;
   highlighted: boolean;
+  exit: boolean;
   x: number;
   y: number;
   nextMove: (board: BoardState) => void;
@@ -39,6 +40,8 @@ export interface BoardState {
   setChargeLeft: (chargeLeft: number) => void;
   gameOver: boolean;
   setGameOver: (gameOver: boolean) => void;
+  win: boolean;
+  setWin: (win: boolean) => void;
 }
 
 const BoardContext = createContext<BoardState>({} as BoardState);
@@ -51,6 +54,7 @@ export const BoardProvider = (props: any) => {
   const [tileSize, setTileSize] = useState(60);
   const [chargeLeft, setChargeLeft] = useState(20);
   const [gameOver, setGameOver] = useState(true);
+  const [win, setWin] = useState(false);
 
   const board: BoardState = {
     numberOfTiles: numberOfTiles,
@@ -63,6 +67,8 @@ export const BoardProvider = (props: any) => {
     setChargeLeft: setChargeLeft,
     gameOver: gameOver,
     setGameOver: setGameOver,
+    win: win,
+    setWin: setWin,
   };
 
   return (
@@ -83,6 +89,7 @@ export const createTiles = (numberOfTiles: number) => {
         sniffed: false,
         highlighted: false,
         occupied: {} as Entity | Consumable,
+        exit: false,
         nextMove: () => {},
         x: i,
         y: j,

@@ -4,8 +4,6 @@ import useEntities from "../hooks/useEntities";
 import { sniffRange } from "../search_for_cheese/SniffForCheese";
 import { Entity } from "../context/EntityContext";
 import { BoardState } from "../context/BoardContext";
-import { isCheeseLeft } from "../search_for_cheese/SniffForCheese";
-import { useState } from "react";
 
 export const SetMoveKeys = (board: BoardState, entity: Entity) => {
   document.onkeydown = checkKey;
@@ -31,12 +29,7 @@ export const SetMoveKeys = (board: BoardState, entity: Entity) => {
 
 const loopSniff = async (board: BoardState, mouse: Entity) => {
   let found = true;
-  while (found || !board.gameOver) {
-    if (isCheeseLeft(board)) {
-      console.log("more cheese!");
-    } else {
-      mouse.speed *= 2;
-    }
+  while (found || !board.gameOver || !board.win) {
     found = await sniffRange(board, mouse);
   }
 };
@@ -54,7 +47,11 @@ const Board = (props: {
   return (
     <div className="h-full m-12 bg-slate-400">
       <div className="flex flex-col justify-between">
-        {!start && board.gameOver ? (
+        {board.win ? (
+          <div className="text-green-500 font-bold text-2xl text-center">
+            You've escape!
+          </div>
+        ) : !start && board.gameOver ? (
           <div className="text-red-500 font-bold text-2xl text-center">
             Game Over
           </div>
